@@ -18,20 +18,27 @@ jobs:
     - uses: actions/setup-node@v4
       with:
         node-version: lts/*
+
     - name: Install dependencies
       run: npm ci --force
 
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps --force
 
+    - name: Check for Snapshot Updaete Request
+      id: check-update
+      run: echo "update_snapshots=${{ github.event.inputs.update_snapshots }}" >> $GITHUB_ENV
+    
     - name: Run Playwright tests
       run: |
-        if [ "${{ github.event.inputs.update_snapshots }}" == "true" ]; then
+        if [ "$update_snapshots" == "true" ]; then
+          echo "Updating snapshots in CI..."
           npm run pageObjects-chrome --update-snapshots
-        else 
+        else
+          echo "Running tests against existing snapshots..."
           npm run pageObjects-chrome
         fi
-        
+
     - name: Upload playwright artifact
       uses: actions/upload-artifact@v4
       if: always()
@@ -39,5 +46,11 @@ jobs:
         name: playwright-report
         path: playwright-report/
         retention-days: 30
-
+    
+    - name: Upload Updateed Snapshot
+      if: ${{ github.event.inputs.update_snapshots == 'true' }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: updated-snapshots
+        path: snapshots/
         
