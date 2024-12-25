@@ -18,11 +18,7 @@ jobs:
       run: npx playwright install --with-deps --force
 
     - name: Run Playwright tests
-      run: npm run pageObjects-chrome
-
-    - name: Generating execution report
-      if: always()
-      run: npx ts-node ./src/framework/reporter/HTMLReporter.ts
+      run: npm run pageObjects-chrome --update-snapshots
     
     - name: Upload playwright artifact
       uses: actions/upload-artifact@v4
