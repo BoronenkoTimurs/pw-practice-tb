@@ -5,11 +5,11 @@ require('dotenv').config();
 
 export default defineConfig<TestOptions>({
   timeout: 40000,
-  // globalTimeout: 60000,
   expect:{
     timeout: 2000,
     toMatchSnapshot: {maxDiffPixels: 50}
   },
+  snapshotPathTemplate: "./screenshots/{projectName}/{testFilePath}/{testName}{ext}",
 
   retries: 1,
   reporter: [
