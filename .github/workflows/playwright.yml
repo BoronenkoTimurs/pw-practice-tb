@@ -17,9 +17,6 @@ jobs:
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps --force
 
-    - name: Run app on localhost
-      run: npm start
-      
     - name: Run Playwright tests
       run: npm run pageObjects-chrome
 
