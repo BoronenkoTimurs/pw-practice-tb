@@ -2,6 +2,9 @@ name: Playwright Tests
 on:
   push:
     branches: [ master ]
+  pull_request:
+    branches: 
+      - master
   workflow_dispatch:
     inputs:
       update_snapshots:
@@ -14,7 +17,11 @@ jobs:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ github.head_ref}}
+
     - uses: actions/setup-node@v4
       with:
         node-version: lts/*
@@ -47,10 +54,26 @@ jobs:
         path: playwright-report/
         retention-days: 30
     
-    - name: Upload Updateed Snapshot
-      if: ${{ github.event.inputs.update_snapshots == 'true' }}
-      uses: actions/upload-artifact@v4
-      with:
-        name: updated-snapshots
-        path: snapshots/
+    # - name: Upload Updateed Snapshot
+    #   if: ${{ github.event.inputs.update_snapshots == 'true' }}
+    #   uses: actions/upload-artifact@v4
+    #   with:
+    #     name: updated-snapshots
+    #     path: ./screenshots/
+
+    - name: Configure git
+      run: |
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git config --global user.name "github-actions[bot]"
+
+    - name: Commit updates snapshots
+      run: |
+        git add .
+        git commit -m "Update snapshots"
+
+    - name: Push changes
+      run: git push origin ${{ github. head_ref }}
+
+    
+
         
