@@ -8,13 +8,21 @@ test.beforeEach(async({page}) => {
     await page.goto('/')
 })
 
-test.only('Test for testing CI', async({page}) => {
+test.only('Test for testing CI First', async({page}) => {
+    const pm = new PageManager(page)
+    await pm.navigateTo().formLayoutsPage()
+
+    await expect(page).toHaveScreenshot({ timeout: 0 });
+})
+
+test.only('Test for testing CI Second', async({page}) => {
     const pm = new PageManager(page)
     await pm.navigateTo().formLayoutsPage()
     await pm.navigateTo().datepickerPage()
 
     await expect(page).toHaveScreenshot({ timeout: 0 });
 })
+
 
 test('navigate to form page @smoke @regression', async({page}) => {
     const pm = new PageManager(page)
