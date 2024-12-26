@@ -33,7 +33,7 @@ jobs:
       run: |
         if [ "$update_snapshots" == "true" ]; then
           echo "Updating snapshots in CI..."
-          npm run pageObjects-chrome --update-snapshots
+          npm run pageObjects-chrome -- --update-snapshots
         else
           echo "Running tests against existing snapshots..."
           npm run pageObjects-chrome
