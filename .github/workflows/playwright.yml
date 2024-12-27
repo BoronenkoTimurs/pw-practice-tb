@@ -50,7 +50,7 @@ jobs:
       - name: Checkout project with dependencies
         uses: actions/download-artifact@v4
         with:
-          ref: project-with-dependencies
+          name: project-with-dependencies
 
       - name: Check for Snapshot Updaete Request
         id: check-update
