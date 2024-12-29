@@ -49,8 +49,6 @@ jobs:
       - name: Run Playwright Tests in Docker Container
         run: |
           docker run --rm \
-            -v ${{ github.workspace }}:/app \
-            -w /app \
             tboronenkodock/app:latest \
             bash -c "
               if [ \"$update_snapshots\" == \"true\" ]; then
