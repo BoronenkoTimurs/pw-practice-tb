@@ -44,7 +44,7 @@ jobs:
     needs: Install_Dependencies
     steps:
       - name: Pull Docker Image
-        run: docker pull user/app:latest
+        run: docker pull tboronenkodock/app:latest
 
       - name: Run Playwright Tests in Docker Container
         run: |
