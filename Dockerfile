@@ -9,4 +9,4 @@ RUN npm install --force
 
 COPY . /app/
 
-RUN npx playwright install-deps --force
+RUN npx playwright install --force
