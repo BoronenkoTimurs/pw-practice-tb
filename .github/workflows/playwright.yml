@@ -49,14 +49,17 @@ jobs:
       - name: Run Playwright Tests in Docker Container
         run: |
           docker run --rm \
-          tboronenkodock/app:latest \
-          if [ "$update_snapshots" == "true" ]; then
-            echo "Updating snapshots in CI..."
-            npm run pageObjects-chrome -- --update-snapshots
-          else
-            echo "Running tests against existing snapshots..."
-            npm run pageObjects-chrome
-          fi
+            -e CI=true \
+            tboronenkodock/app:latest \
+            bash -c "
+              if [ \"$update_snapshots\" == \"true\" ]; then
+                echo 'Updating snapshots in CI...';
+                npm run pageObjects-chrome -- --update-snapshots;
+              else
+                echo 'Running tests against existing snapshots...';
+                npm run pageObjects-chrome;
+              fi
+            "
 
       - name: Upload playwright artifact
         uses: actions/upload-artifact@v4
