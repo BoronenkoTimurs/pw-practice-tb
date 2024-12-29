@@ -37,7 +37,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          tags: tboronenko/app:latest
+          tags: tboronenkodock/app:latest
 
   Run-Tests:
     runs-on: ubuntu-latest
@@ -51,7 +51,7 @@ jobs:
           docker run --rm \
             -v ${{ github.workspace }}:/app \
             -w /app \
-            tboronenko/app:latest \
+            tboronenkodock/app:latest \
             bash -c "
               if [ \"$update_snapshots\" == \"true\" ]; then
                 echo 'Updating snapshots in CI...';
