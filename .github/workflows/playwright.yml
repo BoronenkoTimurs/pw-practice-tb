@@ -47,6 +47,8 @@ jobs:
         run: docker pull tboronenkodock/app:latest
 
       - name: Run Playwright Tests in Docker Container
+        env: 
+          update_snapshots: ${{ github.event.inputs.update_snapshots }}
         run: |
           docker run --rm \
             -e CI=true \
