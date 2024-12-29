@@ -18,7 +18,6 @@ permissions:
     
 jobs:
   Install_Dependencies:
-    timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -43,20 +42,9 @@ jobs:
         path: ./
 
   Run-Tests:
-    timeout-minutes: 60
     runs-on: ubuntu-latest
     needs: Install_Dependencies
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.head_ref}}
-      
-      - name: Checkout project with dependencies
-        uses: actions/download-artifact@v4
-        with:
-          name: project-with-dependencies
-
       - name: Check for Snapshot Updaete Request
         id: check-update
         run: echo "update_snapshots=${{ github.event.inputs.update_snapshots }}" >> $GITHUB_ENV
@@ -78,28 +66,23 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 30
-      
-      # - name: Upload Updateed Snapshot
-      #   if: ${{ github.event.inputs.update_snapshots == 'true' }}
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: updated-snapshots
-      #     path: ./screenshots/
-
+    
+  Commit_Snapshots:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.update_snapshots == 'true' }}
+    needs: Run-Tests
+    steps:
       - name: Configure git
-        if: ${{ github.event.inputs.update_snapshots == 'true' }}
         run: |
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
 
       - name: Commit updates snapshots
-        if: ${{ github.event.inputs.update_snapshots == 'true' }}
         run: |
           git add .
           git commit -m "Update snapshots"
 
       - name: Push changes
-        if: ${{ github.event.inputs.update_snapshots == 'true' }}
         run: git push origin ${{ github. head_ref }}
 
     
