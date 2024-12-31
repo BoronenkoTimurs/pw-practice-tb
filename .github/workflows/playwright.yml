@@ -66,11 +66,14 @@ jobs:
       - name: Upload playwright artifact
         uses: actions/upload-artifact@v4
         if: always()
+        # TODO: Solve issue with path of report - "No files were found with the provided path: ./playwright-report. No artifacts will be uploaded."
         with:
           name: playwright-report
-          path: ./playwright-report
+          path: ./app/playwright-report
           retention-days: 30
-    
+    # TODO: Solve commit issues: 
+    # fatal: not a git repository (or any of the parent directories): .git
+    # Error: Process completed with exit code 128.
   Commit_Snapshots:
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.update_snapshots == 'true' }}
