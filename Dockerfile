@@ -10,3 +10,5 @@ RUN npm install --force
 COPY . /app/
 
 RUN npx playwright install --force
+
+RUN apt update && apt install -y git && apt clean
